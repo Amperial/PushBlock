@@ -39,6 +39,8 @@ public class PlayerListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void playerMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
+		if (!player.hasPermission("pushblock.push"))
+			return;
 		if (!near.containsKey(player) &&
 				event.getTo().getBlockX() == event.getFrom().getBlockX() &&
 				event.getTo().getBlockY() == event.getFrom().getBlockY() &&

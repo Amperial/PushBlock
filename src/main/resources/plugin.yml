@@ -3,3 +3,20 @@ main: ${main.class}
 version: ${project.version}
 author: BillyGalbreath
 description: Push blocks in a cardinal direction.
+permissions:
+    pushblock.*:
+        description: All permissions
+        default: false
+        children:
+            pushblock.push:
+                description: Allow user/group to push pushable blocks
+                default: op
+            pushblock.create:
+                description: Allow user/group to create pushable blocks
+                default: op
+            pushblock.place:
+                description: Allow user/group to place pushable blocks
+                default: op
+            pushblock.break:
+                description: Allow user/group to break pushable blocks
+                default: op
