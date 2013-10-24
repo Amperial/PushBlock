@@ -26,12 +26,13 @@ public class BlokListener implements Listener {
 		List<Block> blocks = event.getBlocks();
 		if (blocks.isEmpty())
 			return;
-		BlockFace direction = event.getDirection().getOppositeFace();
+		BlockFace direction = event.getDirection();
 		for (int i = event.getLength() - 1; i >= 0; i--) { // MUST iterate backwards!!
 			Blok blok = plugin.getBlokManager().getBlok(blocks.get(i));
 			if (blok == null)
 				continue;
 			blok.setLocation(blocks.get(i).getRelative(direction).getLocation());
+			plugin.debug("Moved block. ID: " + blok.getId() + " Location: " + blok.getLocation());
 		}
 	}
 	
@@ -40,10 +41,13 @@ public class BlokListener implements Listener {
 		Block piston = event.getBlock();
 		if (!piston.getType().equals(Material.PISTON_STICKY_BASE))
 			return;
-		Block block = piston.getRelative(event.getDirection().getOppositeFace());
-		Blok blok = plugin.getBlokManager().getBlok(block);
-		if (blok == null)
+		Block block = piston.getRelative(event.getDirection());
+		Blok blok = plugin.getBlokManager().getBlok(block.getRelative(event.getDirection()));
+		if (blok == null) {
+			plugin.debug("null");
 			return;
-		blok.setLocation(event.getRetractLocation());
+		}
+		blok.setLocation(block.getLocation());
+		plugin.debug("Moved block. ID: " + blok.getId() + " Location: " + blok.getLocation());
 	}
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import net.pl3x.pushblock.configuration.ConfManager;
+import net.pl3x.pushblock.listeners.BlokListener;
 import net.pl3x.pushblock.listeners.PlayerListener;
 import net.pl3x.pushblock.listeners.blok.Blok;
 import net.pl3x.pushblock.listeners.blok.BlokManager;
@@ -24,6 +25,7 @@ public class PushBlock extends JavaPlugin {
 			saveDefaultConfig();
 		
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
+		Bukkit.getPluginManager().registerEvents(new BlokListener(this), this);
 		
 		blokManager = new BlokManager();
 		confManager = ConfManager.getConfManager();
