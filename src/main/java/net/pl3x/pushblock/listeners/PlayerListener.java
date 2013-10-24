@@ -157,7 +157,6 @@ public class PlayerListener implements Listener {
 			event.setCancelled(true);
 			return;
 		}
-		blok.remove();
 		plugin.getBlokManager().removeBlok(blok);
 		plugin.debug(p.getName() + " broke block: " + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ());
 		if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE))

@@ -19,8 +19,9 @@ public class BlokManager {
 	}
 	
 	public void removeBlok(Blok blok) {
-		if (!bloks.contains(bloks))
+		if (!bloks.contains(blok))
 			return;
+		blok.remove();
 		bloks.remove(blok);
 	}
 	
