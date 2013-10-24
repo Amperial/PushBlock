@@ -65,7 +65,6 @@ public class PlayerListener implements Listener {
 				continue;
 			Material type = oldBlock.getType();
 			oldBlock.setType(Material.AIR);
-			blok.setType(type);
 			newBlock.setType(type);
 			blok.setLocation(newBlock.getLocation());
 			if (near.containsKey(player))
@@ -136,7 +135,7 @@ public class PlayerListener implements Listener {
 		Location loc = block.getLocation();
 		Blok blok = plugin.getBlokManager().getBlok(loc.getBlock());
 		if (blok == null)
-			blok = plugin.getBlokManager().addBlok(new Blok(loc, block.getType(), plugin.getBlokManager().getNextId()));
+			blok = plugin.getBlokManager().addBlok(new Blok(loc, plugin.getBlokManager().getNextId()));
 		blok.setLocation(loc);
 		plugin.debug(p.getName() + " placed block: " + (int) loc.getX() + "," + (int) loc.getY() + "," + (int) loc.getZ());
 	}

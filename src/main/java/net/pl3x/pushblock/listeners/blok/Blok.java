@@ -9,12 +9,10 @@ import org.bukkit.block.BlockFace;
 
 public class Blok {
 	private Location location;
-	private Material type;
 	private Integer id;
 	
-	public Blok(Location location, Material type, int id) {
+	public Blok(Location location, int id) {
 		this.location = location;
-		this.type = type;
 		this.id = id;
 	}
 	
@@ -22,12 +20,12 @@ public class Blok {
 		return location;
 	}
 	
-	public Material getType() {
-		return type;
-	}
-	
 	public Integer getId() {
 		return id;
+	}
+	
+	public Material getType() {
+		return location.getBlock().getType();
 	}
 	
 	public void setLocation(Location location) {
@@ -37,14 +35,12 @@ public class Blok {
 		cm.forceSave();
 	}
 	
-	public void setType(Material type) {
-		this.type = type;
-	}
-	
 	public void remove() {
 		ConfManager cm = ConfManager.getConfManager();
 		cm.set("blocks." + id.toString(), null);
 		cm.forceSave();
+		id = null;
+		location = null;
 	}
 	
 	public BlockFace checkNear(Block block) {
