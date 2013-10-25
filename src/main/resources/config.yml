@@ -3,3 +3,7 @@ debug-mode: false
 
 # Enable colors in console output
 color-logs: true
+
+# Reset blocks to original position when world is unloaded.
+# This is useful for instanced maps like with AdvenTour plugin.
+reset-on-unload-world: false
