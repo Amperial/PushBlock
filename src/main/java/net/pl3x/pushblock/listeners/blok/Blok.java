@@ -26,16 +26,24 @@ public class Blok {
 		cm.forceSave();
 	}
 	
-	public Location getLocation() {
-		return location;
-	}
-	
 	public Integer getId() {
 		return id;
 	}
 	
 	public Material getType() {
 		return location.getBlock().getType();
+	}
+	
+	public void setType(Material type) {
+		location.getBlock().setType(type);
+	}
+	
+	public Location getLocation() {
+		return location;
+	}
+	
+	public Location getOriginalLocation() {
+		return originalLoc;
 	}
 	
 	public void setLocation(Location location) {

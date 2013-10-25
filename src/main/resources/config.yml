@@ -4,6 +4,7 @@ debug-mode: false
 # Enable colors in console output
 color-logs: true
 
-# Reset blocks to original position when world is unloaded.
-# This is useful for instanced maps like with AdvenTour plugin.
-reset-on-unload-world: false
+# Allow instanced worlds.
+# Enable this to make pushable blocks placed in a template world work in the instanced worlds.
+# Compatible name scheme: worldname.instance
+allow-instanced-worlds: true
