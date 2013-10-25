@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.pl3x.pushblock</groupId>
 	<artifactId>PushBlock</artifactId>
-	<version>1.0</version>
+	<version>1.1</version>
 	<packaging>jar</packaging>
 	<name>PushBlock</name>
 	<developers>
