@@ -88,7 +88,12 @@ public class PushBlock extends JavaPlugin {
 				debug("Malformed location in blocks.yml: ID: " + id);
 				continue;
 			}
-			Blok blok = new Blok(loc, i);
+			Location originalLoc = cm.getLocation(id + ".original");
+			Blok blok;
+			if (originalLoc == null)
+				blok = new Blok(originalLoc, loc, i);
+			else
+				blok = new Blok(loc, i);
 			blokManager.addBlok(blok);
 			debug("Loaded block from config. Id: " + id + " Location: " + loc.toString());
 		}

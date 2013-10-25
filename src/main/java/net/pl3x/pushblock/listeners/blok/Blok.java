@@ -8,12 +8,22 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 public class Blok {
+	private Location originalLoc;
 	private Location location;
 	private Integer id;
 	
 	public Blok(Location location, int id) {
-		this.location = location;
+		this(location, location, id);
+	}
+	
+	public Blok(Location originalLoc, Location location, Integer id) {
 		this.id = id;
+		this.originalLoc = originalLoc.clone();
+		this.location = location.clone();
+		ConfManager cm = ConfManager.getConfManager();
+		cm.setLocation(id.toString(), location);
+		cm.setLocation(id.toString() + ".original", location);
+		cm.forceSave();
 	}
 	
 	public Location getLocation() {
@@ -29,7 +39,7 @@ public class Blok {
 	}
 	
 	public void setLocation(Location location) {
-		this.location = location;
+		this.location = location.clone();
 		ConfManager cm = ConfManager.getConfManager();
 		cm.setLocation(id.toString(), location);
 		cm.forceSave();
@@ -41,6 +51,17 @@ public class Blok {
 		cm.forceSave();
 		id = null;
 		location = null;
+	}
+	
+	public void reset() {
+		Block block = location.getBlock();
+		Material type = block.getType();
+		block.setType(Material.AIR);
+		location = originalLoc.clone();
+		location.getBlock().setType(type);
+		ConfManager cm = ConfManager.getConfManager();
+		cm.setLocation(id.toString(), location);
+		cm.forceSave();
 	}
 	
 	public BlockFace checkNear(Block block) {
