@@ -28,18 +28,48 @@ public class Utils {
 		List<String> lore = meta.getLore();
 		if (lore == null || lore.isEmpty())
 			return false;
-		if (lore.get(0).equalsIgnoreCase("Pushable"))
+		if (lore.get(0).equals("Pushable"))
 			return true;
 		return false;
 	}
 	
 	public static boolean hasName(ItemMeta meta) {
-		if (meta == null)
+		if (meta == null || meta.getDisplayName() == null)
 			return false;
-		if (meta.getDisplayName() == null)
-			return false;
-		if (meta.getDisplayName().equals("Pushable"))
+		if (meta.getDisplayName().startsWith("Pushable"))
 			return true;
 		return false;
+	}
+	
+	public static BlockFace getDirection(ItemMeta meta) {
+		if (!hasName(meta))
+			return null;
+		String[] lore = meta.getDisplayName().split(" ");
+		if (lore.length < 2)
+			return null;
+		if (lore[1].equalsIgnoreCase("N") || lore[1].equalsIgnoreCase("North"))
+			return BlockFace.NORTH;
+		if (lore[1].equalsIgnoreCase("S") || lore[1].equalsIgnoreCase("South"))
+			return BlockFace.SOUTH;
+		if (lore[1].equalsIgnoreCase("E") || lore[1].equalsIgnoreCase("East"))
+			return BlockFace.EAST;
+		if (lore[1].equalsIgnoreCase("W") || lore[1].equalsIgnoreCase("West"))
+			return BlockFace.WEST;
+		return null;
+	}
+	
+	public static Integer getDistance(ItemMeta meta) {
+		if (!hasName(meta))
+			return null;
+		String[] lore = meta.getDisplayName().split(" ");
+		if (lore.length < 3)
+			return null;
+		Integer distance = null;
+		try {
+			distance = Integer.valueOf(lore[2]);
+		} catch (Exception e) {
+			return null;
+		}
+		return distance;
 	}
 }
