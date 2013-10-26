@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.IOException;
 
 import net.pl3x.pushblock.PushBlock;
+import net.pl3x.pushblock.exception.WorldNotFoundException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ConfManager extends YamlConfiguration {
@@ -62,14 +64,17 @@ public class ConfManager extends YamlConfiguration {
 		}
 	}
 	
-	public Location getLocation(String id) {
+	public Location getLocation(String id) throws WorldNotFoundException {
 		if (!isSet("blocks." + id))
 			return null;
 		String w = getString("blocks." + id + ".w");
 		double x = getDouble("blocks." + id + ".x");
 		double y = getDouble("blocks." + id + ".y");
 		double z = getDouble("blocks." + id + ".z");
-		return new Location(Bukkit.getWorld(w), x, y, z);
+		World world = Bukkit.getWorld(w);
+		if (world == null)
+			throw new WorldNotFoundException();
+		return new Location(world, x, y, z);
 	}
 	
 	public void setLocation(String id, Location value) {

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import net.pl3x.pushblock.configuration.ConfManager;
+import net.pl3x.pushblock.exception.WorldNotFoundException;
 import net.pl3x.pushblock.listeners.BlokListener;
 import net.pl3x.pushblock.listeners.PlayerListener;
 import net.pl3x.pushblock.listeners.WorldListener;
@@ -85,12 +86,24 @@ public class PushBlock extends JavaPlugin {
 				debug("Malformed ID in blocks.yml: ID: " + id);
 				continue;
 			}
-			Location loc = cm.getLocation(id);
+			Location loc = null;
+			try {
+				loc = cm.getLocation(id);
+			} catch (WorldNotFoundException e) {
+				debug("World not loaded or does not exist! ID: " + id);
+				continue;
+			}
 			if (loc == null) {
 				debug("Malformed location in blocks.yml: ID: " + id);
 				continue;
 			}
-			Location originalLoc = cm.getLocation(id + ".original");
+			Location originalLoc = null;
+			try {
+				originalLoc = cm.getLocation(id + ".original");
+			} catch (WorldNotFoundException e) {
+				debug("Original world not loaded or does not exist! ID: " + id);
+				continue;
+			}
 			Blok blok;
 			if (originalLoc == null)
 				blok = new Blok(originalLoc, loc, i);
