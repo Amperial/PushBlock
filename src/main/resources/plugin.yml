@@ -3,6 +3,7 @@ main: ${main.class}
 version: ${project.version}
 author: BillyGalbreath
 description: Push blocks in a cardinal direction.
+softdepend: [Multiverse-Core,MultiWorld,AdvenTour]
 permissions:
     pushblock.*:
         description: All permissions
