@@ -2,27 +2,45 @@ package net.pl3x.pushblock.listeners.blok;
 
 import net.pl3x.pushblock.configuration.ConfManager;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 public class Blok {
-	private Location originalLoc;
-	private Location location;
-	private Integer id;
+	private Integer id;	
+	private String worldName;
+	private Integer x;
+	private Integer y;
+	private Integer z;
+	private Integer ox;
+	private Integer oy;
+	private Integer oz;
 	
-	public Blok(Location location, int id) {
-		this(location, location, id);
+	public Blok(int id, String worldName, int x, int y, int z) {
+		this(id, worldName, x, y, z, x, y, z);
 	}
 	
-	public Blok(Location originalLoc, Location location, Integer id) {
+	public Blok(Integer id, String worldName, int x, int y, int z, int ox, int oy, int oz) {
 		this.id = id;
-		this.originalLoc = originalLoc.clone();
-		this.location = location.clone();
+		this.worldName = worldName;
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.ox = ox;
+		this.oy = oy;
+		this.oz = oz;
+		String idStr = id.toString();
 		ConfManager cm = ConfManager.getConfManager();
-		cm.setLocation(id.toString(), location);
-		cm.setLocation(id.toString() + ".original", location);
+		cm.set("blocks." + idStr + ".w", worldName);
+		cm.set("blocks." + idStr + ".x", x);
+		cm.set("blocks." + idStr + ".y", y);
+		cm.set("blocks." + idStr + ".z", z);
+		cm.set("blocks." + idStr + ".ox", ox);
+		cm.set("blocks." + idStr + ".oy", oy);
+		cm.set("blocks." + idStr + ".oz", oz);
 		cm.forceSave();
 	}
 	
@@ -30,26 +48,54 @@ public class Blok {
 		return id;
 	}
 	
+	public String getWorldName() {
+		return worldName;
+	}
+	
+	public Integer getX() {
+		return x;
+	}
+	
+	public Integer getY() {
+		return y;
+	}
+	
+	public Integer getZ() {
+		return z;
+	}
+	
 	public Material getType() {
-		return location.getBlock().getType();
+		return getLocation().getBlock().getType();
 	}
 	
 	public void setType(Material type) {
-		location.getBlock().setType(type);
+		getLocation().getBlock().setType(type);
 	}
 	
 	public Location getLocation() {
-		return location;
+		World world = Bukkit.getWorld(worldName);
+		if (world == null)
+			return null;
+		return new Location(world, x, y, z);
 	}
 	
 	public Location getOriginalLocation() {
-		return originalLoc;
+		World world = Bukkit.getWorld(worldName);
+		if (world == null)
+			return null;
+		return new Location(world, ox, oy, oz);
 	}
 	
 	public void setLocation(Location location) {
-		this.location = location.clone();
+		x = location.getBlockX();
+		y = location.getBlockY();
+		z = location.getBlockZ();
+		String idStr = id.toString();
 		ConfManager cm = ConfManager.getConfManager();
-		cm.setLocation(id.toString(), location);
+		cm.set("blocks." + idStr + ".w", location.getWorld().getName());
+		cm.set("blocks." + idStr + ".x", x);
+		cm.set("blocks." + idStr + ".y", y);
+		cm.set("blocks." + idStr + ".z", z);
 		cm.forceSave();
 	}
 	
@@ -58,21 +104,34 @@ public class Blok {
 		cm.set("blocks." + id.toString(), null);
 		cm.forceSave();
 		id = null;
-		location = null;
+		worldName = null;
+		x = null;
+		y = null;
+		z = null;
+		ox = null;
+		oy = null;
+		oz = null;
 	}
 	
 	public void reset() {
-		Block block = location.getBlock();
+		Block block = getLocation().getBlock();
 		Material type = block.getType();
 		block.setType(Material.AIR);
-		location = originalLoc.clone();
-		location.getBlock().setType(type);
+		x = ox;
+		y = oy;
+		z = oz;
+		getLocation().getBlock().setType(type);
+		String idStr = id.toString();
 		ConfManager cm = ConfManager.getConfManager();
-		cm.setLocation(id.toString(), location);
+		cm.set("blocks." + idStr + ".w", worldName);
+		cm.set("blocks." + idStr + ".x", x);
+		cm.set("blocks." + idStr + ".y", y);
+		cm.set("blocks." + idStr + ".z", z);
 		cm.forceSave();
 	}
 	
 	public BlockFace checkNear(Block block) {
+		Location location = getLocation();
 		if (block.getRelative(BlockFace.NORTH).getLocation().equals(location))
 			return BlockFace.NORTH;
 		if (block.getRelative(BlockFace.SOUTH).getLocation().equals(location))
@@ -85,6 +144,7 @@ public class Blok {
 	}
 	
 	public BlockFace checkNearUpper(Block block) {
+		Location location = getLocation();
 		block = block.getRelative(BlockFace.UP);
 		if (block.getRelative(BlockFace.NORTH).getLocation().equals(location))
 			return BlockFace.NORTH;

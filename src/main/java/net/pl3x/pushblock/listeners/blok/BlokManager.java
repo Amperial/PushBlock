@@ -27,6 +27,8 @@ public class BlokManager {
 	
 	public Blok getBlok(Block block) {
 		for (Blok blok : bloks) {
+			if (blok.getLocation() == null)
+				continue;
 			if (blok.getLocation().equals(block.getLocation()))
 				return blok;
 		}

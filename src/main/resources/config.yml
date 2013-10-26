@@ -4,7 +4,22 @@ debug-mode: false
 # Enable colors in console output
 color-logs: true
 
-# Allow instanced worlds.
+########################################################################
+# The following settings are for instanced worlds only.                #
+# If you do not know what that is, leave them disabled to save memory. #
+########################################################################
+
+# Allow instanced worlds to populate pushable blocks from template world
 # Enable this to make pushable blocks placed in a template world work in the instanced worlds.
-# Compatible name scheme: worldname.instance
-allow-instanced-worlds: true
+allow-instanced-worlds: false
+
+# Delete all pushable blocks in instanced worlds when the instanced world is unloaded.
+# Enable this if your instanced worlds delete/reset when they are unloaded.
+# Make sure your instance world is deleted/reset on unload or your blocks will not be pushable!
+delete-instanced-blocks-on-unload: false
+
+# List of your instanced worlds' Template world
+# The are the default templates that come with AdvenTour
+template-worlds:
+- Testworld1
+- Testworld2

@@ -135,7 +135,7 @@ public class PlayerListener implements Listener {
 		Location loc = block.getLocation();
 		Blok blok = plugin.getBlokManager().getBlok(loc.getBlock());
 		if (blok == null)
-			blok = plugin.getBlokManager().addBlok(new Blok(loc, plugin.getBlokManager().getNextId()));
+			blok = plugin.getBlokManager().addBlok(new Blok(plugin.getBlokManager().getNextId(), loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
 		blok.setLocation(loc);
 		plugin.debug(p.getName() + " placed block: " + (int) loc.getX() + "," + (int) loc.getY() + "," + (int) loc.getZ());
 	}

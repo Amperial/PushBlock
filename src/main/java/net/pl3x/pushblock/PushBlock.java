@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import net.pl3x.pushblock.configuration.ConfManager;
-import net.pl3x.pushblock.exception.WorldNotFoundException;
 import net.pl3x.pushblock.listeners.BlokListener;
 import net.pl3x.pushblock.listeners.PlayerListener;
 import net.pl3x.pushblock.listeners.WorldListener;
@@ -14,7 +13,6 @@ import net.pl3x.pushblock.listeners.blok.Blok;
 import net.pl3x.pushblock.listeners.blok.BlokManager;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
 
@@ -78,39 +76,28 @@ public class PushBlock extends JavaPlugin {
 		Map<String, Object> opts = cm.getConfigurationSection("blocks").getValues(false);
 		if (opts.keySet().isEmpty())
 			return;
-		for (String id : opts.keySet()) {
-			Integer i = null;
+		for (String idStr : opts.keySet()) {
+			Integer id = null;
 			try {
-				i = Integer.valueOf(id);
+				id = Integer.valueOf(idStr);
 			} catch (Exception e) {
-				debug("Malformed ID in blocks.yml: ID: " + id);
+				debug("Malformed ID in blocks.yml: ID: " + idStr);
 				continue;
 			}
-			Location loc = null;
-			try {
-				loc = cm.getLocation(id);
-			} catch (WorldNotFoundException e) {
-				debug("World not loaded or does not exist! ID: " + id);
-				continue;
-			}
-			if (loc == null) {
-				debug("Malformed location in blocks.yml: ID: " + id);
-				continue;
-			}
-			Location originalLoc = null;
-			try {
-				originalLoc = cm.getLocation(id + ".original");
-			} catch (WorldNotFoundException e) {
-				debug("Original world not loaded or does not exist! ID: " + id);
-				continue;
-			}
+			String worldName = cm.getString("blocks." + idStr + ".w");
+			Integer x = cm.getInt("blocks." + idStr + ".x");
+			Integer y = cm.getInt("blocks." + idStr + ".y");
+			Integer z = cm.getInt("blocks." + idStr + ".z");
+			Integer ox = cm.getInt("blocks." + idStr + ".ox");
+			Integer oy = cm.getInt("blocks." + idStr + ".oy");
+			Integer oz = cm.getInt("blocks." + idStr + ".oz");
 			Blok blok;
-			if (originalLoc == null)
-				blok = new Blok(originalLoc, loc, i);
+			if (ox == null || oy == null || oz == null)
+				blok = new Blok(id, worldName, x, y, z);
 			else
-				blok = new Blok(loc, i);
+				blok = new Blok(id, worldName, x, y, z, ox, oy, oz);
 			blokManager.addBlok(blok);
-			debug("Loaded block from config. Id: " + id + " Location: " + loc.toString());
+			debug("Loaded block from config. Id: " + idStr + " Location: " + worldName + " " + x + "," + y + "," + z);
 		}
 	}
 }
