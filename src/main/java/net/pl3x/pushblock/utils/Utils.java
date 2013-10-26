@@ -8,18 +8,27 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class Utils {
 	public static float getCloseness(BlockFace face, Location loc) {
+		float closeness = 1;
 		switch (face) {
 			case NORTH:
-				return (float) (loc.getZ() % 1);
+				closeness = (float) (loc.getZ() % 1);
+				break;
 			case SOUTH:
-				return 1 - (float) (loc.getZ() % 1);
+				closeness = 1 - (float) (loc.getZ() % 1);
+				break;
 			case EAST:
-				return 1 - (float) (loc.getX() % 1);
+				closeness = 1 - (float) (loc.getX() % 1);
+				break;
 			case WEST:
-				return (float) (loc.getX() % 1);
+				closeness = (float) (loc.getX() % 1);
+				break;
 			default:
-				return 1;
 		}
+		if (closeness < 0)
+			closeness++;
+		if (closeness > 1)
+			closeness--;
+		return closeness;
 	}
 	
 	public static boolean hasLore(ItemMeta meta) {
